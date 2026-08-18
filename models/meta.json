@@ -1,0 +1,32 @@
+{
+  "feature_cols": [
+    "PM2_5_ug_m3",
+    "PM10_ug_m3",
+    "NO2_ppb"
+  ],
+  "classes": [
+    "Hazardous",
+    "Moderate",
+    "Unhealthy",
+    "Unhealthy_SG",
+    "Very_Unhealthy"
+  ],
+  "mlp_arch": [
+    3,
+    32,
+    16,
+    5
+  ],
+  "dnn_arch": [
+    3,
+    64,
+    32,
+    5
+  ],
+  "dnn_dropout": 0.1,
+  "mlp_macro_f1": 0.9934,
+  "dnn_macro_f1": 0.9858,
+  "mlp_acc": 0.9964,
+  "dnn_acc": 0.9884,
+  "target": "Calculated_AQI_Category"
+}

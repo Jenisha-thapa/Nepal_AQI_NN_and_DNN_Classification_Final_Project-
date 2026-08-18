@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepal Air Quality Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Nepal &middot; Air Quality</div>
+    <h1>District Air Quality Dashboard</h1>
+    <p class="sub">Select a district to see its measured air quality, or enter pollutant readings for a live AI prediction from two independently trained models. These are two different things &mdash; see the labels on each card.</p>
+  </header>
+
+  <!-- ============ A. HISTORICAL / DATASET AQI ============ -->
+  <section class="card data">
+    <div class="card-label">&#9679; Historical / Dataset AQI</div>
+    <h2 class="card-title">District readings</h2>
+    <p class="card-desc">Averaged from the actual measurement dataset (600,000 readings). AQI status is calculated from PM2.5/PM10/NO2 using the EPA's published AQI formula &mdash; not the dataset's original <code>AQI</code> column, which was found to carry no real relationship to the pollutant readings.</p>
+
+    <label class="field-label" for="districtSelect">District</label>
+    <select id="districtSelect"></select>
+
+    <div class="status-row">
+      <div class="district-name" id="distName">&mdash;</div>
+      <div class="pill" id="distPill">&mdash;</div>
+    </div>
+
+    <div class="scale"><div class="scale-marker" id="distMarker" style="left:0%"></div></div>
+    <div class="scale-caption"><span>0</span><span>Good &rarr; Hazardous</span><span>500</span></div>
+
+    <div class="pollutant-grid">
+      <div class="pollutant-cell"><div class="val" id="distPM25">&mdash;</div><div class="lbl">PM2.5 (&micro;g/m&sup3;)</div></div>
+      <div class="pollutant-cell"><div class="val" id="distPM10">&mdash;</div><div class="lbl">PM10 (&micro;g/m&sup3;)</div></div>
+      <div class="pollutant-cell"><div class="val" id="distNO2">&mdash;</div><div class="lbl">NO2 (ppb)</div></div>
+    </div>
+    <div class="n-note" id="distNote"></div>
+  </section>
+
+  <!-- ============ B. AI PREDICTION ============ -->
+  <section class="card ai">
+    <div class="card-label">&#9679; AI Prediction</div>
+    <h2 class="card-title">Predict AQI from pollutant readings</h2>
+    <p class="card-desc" id="aiDesc">Enter any PM2.5 / PM10 / NO2 reading and this runs both trained models &mdash; an MLP neural network and a from-scratch DNN &mdash; on your backend, live.</p>
+
+    <div class="input-grid">
+      <div><label class="field-label" for="inPM25">PM2.5 (&micro;g/m&sup3;)</label><input type="number" id="inPM25" value="180" step="0.1" min="0"></div>
+      <div><label class="field-label" for="inPM10">PM10 (&micro;g/m&sup3;)</label><input type="number" id="inPM10" value="260" step="0.1" min="0"></div>
+      <div><label class="field-label" for="inNO2">NO2 (ppb)</label><input type="number" id="inNO2" value="37" step="0.1" min="0"></div>
+    </div>
+
+    <button id="predictBtn">Predict AQI &mdash; run both models</button>
+    <div id="loading" class="loading" style="display:none;">Running MLP &amp; DNN&hellip;</div>
+    <div id="errorBox" class="error-box" style="display:none;"></div>
+
+    <div class="model-results" id="modelResults"></div>
+  </section>
+
+  <footer>
+    District averages and pollutant readings are computed directly from the dataset. AI predictions come from two models trained in the analysis notebook and served live by the FastAPI backend.
+  </footer>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
